@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Pull rebase
+        uses: peter-evans/rebase@v1
+        with:
+          base: develop
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.2.0
