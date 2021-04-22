@@ -25,11 +25,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: 'merge-main-back'
+          branch: "merge-$GITHUB_BASE_REF-back-$GITHUB_RUN_ID"
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: merge-main-back
+          ref: "merge-$GITHUB_BASE_REF-back-$GITHUB_RUN_ID"
       - name: Rebase with develop
         uses: peter-evans/rebase@v1
         with:
@@ -41,7 +41,7 @@ jobs:
         uses: tretuna/sync-branches@1.2.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: "merge-main-back"
+          FROM_BRANCH: "merge-$GITHUB_BASE_REF-back-$GITHUB_RUN_ID"
           TO_BRANCH: "develop"
 
 # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
