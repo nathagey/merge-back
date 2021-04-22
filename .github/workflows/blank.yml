@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Syncing branches
     env:
-      MERGE_BRANCH: merge-back-${{jobs.sync-branches.env.GITHUB_ACTION}}
+      MERGE_BRANCH: merge-back-${{envGITHUB_ACTION}}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
