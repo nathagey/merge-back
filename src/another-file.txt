@@ -1,1 +1,2 @@
-file feature added.
+Another file feature added.
+And a bugfix...
