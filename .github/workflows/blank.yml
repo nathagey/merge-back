@@ -20,11 +20,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Rebase with TO_BRANCH
+      - name: Create branch
+        uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'merge-release-back-to-develop'
+      - name: Rebase with develop
         uses: peter-evans/rebase@v1
         with:
           base: develop
-      - name: Check that TO_BRANCH changes exist
+      - name: Check that develop changes exist
         run: cat ./README.md
       - name: Opening pull request
         id: pull
