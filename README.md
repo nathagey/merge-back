@@ -1,5 +1,3 @@
 # merge-back
 
-Makes a PR to merge changes back to a main branch.
-
-And takes advantage of CODEOWNERS to get approvers.
+Makes a branch from main, rebases with develop and creates a PR targeting develop. PR doesn't have any approvers. CODEOWNERS should work, but it's not.
