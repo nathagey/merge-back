@@ -26,8 +26,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: 'merge-main-back'
-#       - name: Checkout
-#         uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: merge-main-back
       - name: Rebase with develop
         uses: peter-evans/rebase@v1
         with:
