@@ -20,10 +20,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Pull rebase
+      - name: Rebase with TO_BRANCH
         uses: peter-evans/rebase@v1
         with:
           base: develop
+      - name: Check that TO_BRANCH changes exist
+        run: cat ./README.md
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.2.0
