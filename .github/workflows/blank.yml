@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Syncing branches
     env:
-      BRANCH_ID: $GITHUB_RUN_ID
+      BRANCH_ID: $GITHUB_ACTION
     steps:
       - name: Checkout
         uses: actions/checkout@v2
