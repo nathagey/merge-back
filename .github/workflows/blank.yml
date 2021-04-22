@@ -14,6 +14,8 @@ jobs:
   sync-branches:
     runs-on: ubuntu-latest
     name: Syncing branches
+    env:
+      MERGE_BRANCH: merge-back-$GITHUB_ACTION
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,11 +24,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: merge-main-back-${{GITHUB_ACTION}}
+          branch: ${{env.MERGE_BRANCH}}
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: merge-main-back-${{GITHUB_ACTION}}
+          ref: ${{env.MERGE_BRANCH}}
       - name: Rebase with develop
         uses: peter-evans/rebase@v1
         with:
@@ -38,7 +40,7 @@ jobs:
         uses: tretuna/sync-branches@1.2.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: merge-main-back-${{GITHUB_ACTION}}
+          FROM_BRANCH: ${{env.MERGE_BRANCH}}
           TO_BRANCH: "develop"
 
 # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
