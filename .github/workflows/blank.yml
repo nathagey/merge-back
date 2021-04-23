@@ -29,6 +29,7 @@ jobs:
           git config user.email github-actions@github.com
           git pull origin ${{env.RELEASE_BRANCH}} --rebase
           git pull origin ${{env.DEVELOP_BRANCH}} --rebase
+          git push --no-verify --force-with-lease
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.2.0
