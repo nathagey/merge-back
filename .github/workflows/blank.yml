@@ -43,5 +43,5 @@ jobs:
         uses: tretuna/sync-branches@1.2.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: ${{env.MERGE_BRANCH_NAME}}
+          FROM_BRANCH: ${{env.MERGE_BRANCH}}
           TO_BRANCH: ${{env.DEVELOP_BRANCH}}
