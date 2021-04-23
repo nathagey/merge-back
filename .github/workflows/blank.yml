@@ -26,12 +26,8 @@ jobs:
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git reset -- origin/main --hard
+          git pull origin ${{env.RELEASE_BRANCH}} --rebase
           git pull origin ${{env.DEVELOP_BRANCH}} --rebase
-      - name: Check env variables
-        run: echo $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
-      - name: Check that develop changes exist
-        run: cat ./README.md
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.2.0
