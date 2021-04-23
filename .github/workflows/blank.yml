@@ -15,24 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Syncing branches
     env:
-      MERGE_BRANCH_NAME: merge-back
+      RELEASE_BRANCH: main
+      DEVELOP_BRANCH: develop
+      MERGE_BRANCH: main-merge-back
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Create branch
-        uses: peterjgrainger/action-create-branch@v2.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: ${{env.MERGE_BRANCH_NAME}}
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{env.MERGE_BRANCH_NAME}}
-      - name: Rebase with develop
-        uses: peter-evans/rebase@v1
-        with:
-          base: develop
+          ref: ${{env.MERGE_BRANCH}}
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git reset --hard origin ${{env.RELEASE_BRANCH}}
+          git pull origin ${{env.DEVELOP_BRANCH}} --rebase
       - name: Check that develop changes exist
         run: cat ./README.md
       - name: Opening pull request
@@ -40,8 +35,45 @@ jobs:
         uses: tretuna/sync-branches@1.2.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: ${{env.MERGE_BRANCH_NAME}}
-          TO_BRANCH: "develop"
+          FROM_BRANCH: ${{env.MERGE_BRANCH}}
+          TO_BRANCH: ${{env.DEVELOP_BRANCH}}
+
+
+
+# Documented version 1
+
+# jobs:
+#   sync-branches:
+#     runs-on: ubuntu-latest
+#     name: Syncing branches
+#     env:
+#       MERGE_BRANCH_NAME: merge-back
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Create branch
+#         uses: peterjgrainger/action-create-branch@v2.0.1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           branch: ${{env.MERGE_BRANCH_NAME}}
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#         with:
+#           ref: ${{env.MERGE_BRANCH_NAME}}
+#       - name: Rebase with develop
+#         uses: peter-evans/rebase@v1
+#         with:
+#           base: develop
+#       - name: Check that develop changes exist
+#         run: cat ./README.md
+#       - name: Opening pull request
+#         id: pull
+#         uses: tretuna/sync-branches@1.2.0
+#         with:
+#           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#           FROM_BRANCH: ${{env.MERGE_BRANCH_NAME}}
+#           TO_BRANCH: "develop"
 
 # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 # jobs:
