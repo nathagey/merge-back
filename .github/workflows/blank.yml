@@ -26,7 +26,7 @@ jobs:
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git reset --hard origin ${{env.RELEASE_BRANCH}}
+          git reset --hard origin/${{env.RELEASE_BRANCH}}
           git pull origin ${{env.DEVELOP_BRANCH}} --rebase
       - name: Check that develop changes exist
         run: cat ./README.md
