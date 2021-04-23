@@ -1,12 +1,10 @@
-# This is a basic workflow to help you get started with Actions
+name: Scheduled Events
 
-name: CI
-
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ release/** ]
+#   schedule:
+#     - cron: '0 7 * * 1,3,5'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -15,8 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Syncing branches
     env:
-      MERGE_BRANCH_NAME: merge-back
+      MERGE_BRANCH_NAME: main-merge-back
+      MERGE_BRANCH: merge/$GITHUB_REF
     steps:
+      - name: Delete branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{github.token}}
+          branches: ${{env.MERGE_BRANCH_NAME}}
       - name: Checkout
         uses: actions/checkout@v2
       - name: Create branch
@@ -33,8 +37,6 @@ jobs:
         uses: peter-evans/rebase@v1
         with:
           base: develop
-      - name: Check that develop changes exist
-        run: cat ./README.md
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.2.0
