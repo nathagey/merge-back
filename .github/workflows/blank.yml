@@ -34,11 +34,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{env.MERGE_BRANCH}}
-      - name: Rebase with develop
+      - name: Rebase with ${{env.DEVELOP_BRANCH}}
         uses: peter-evans/rebase@v1
         with:
           base: ${{env.DEVELOP_BRANCH}}
-      - name: Open PE
+      - name: Open Pull Request
         id: pull
         uses: tretuna/sync-branches@1.2.0
         with:
