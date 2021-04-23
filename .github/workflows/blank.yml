@@ -7,6 +7,10 @@ on:
 #     - cron: '0 7 * * 1,3,5'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'branch name eg. release/1.0.0'
+        required: true
 
 jobs:
   sync-branches:
@@ -14,34 +18,36 @@ jobs:
     name: Syncing branches
     env:
       MERGE_BRANCH: merge/r1
-      RELEASE_BRANCH: release/1.0.0
+      RELEASE_BRANCH: ${{ github.event.inputs.name || 'release/1.0.0' }}
       DEVELOP_BRANCH: develop
     steps:
-      - name: Delete MERGE_BRANCH
-        uses: dawidd6/action-delete-branch@v3
-        with:
-          github_token: ${{github.token}}
-          branches: ${{env.MERGE_BRANCH}}
-      - name: Checkout RELEASE_BRANCH
-        uses: actions/checkout@v2
-      - name: Create MERGE_BRANCH
-        uses: peterjgrainger/action-create-branch@v2.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: ${{env.MERGE_BRANCH}}
-      - name: Checkout MERGE_BRANCH
-        uses: actions/checkout@v2
-        with:
-          ref: ${{env.MERGE_BRANCH}}
-      - name: Rebase with ${{env.DEVELOP_BRANCH}}
-        uses: peter-evans/rebase@v1
-        with:
-          base: ${{env.DEVELOP_BRANCH}}
-      - name: Open Pull Request
-        id: pull
-        uses: tretuna/sync-branches@1.2.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: ${{env.MERGE_BRANCH}}
-          TO_BRANCH: ${{env.DEVELOP_BRANCH}}
+      - name: Check it out
+        run: ${{ env.RELEASE_BRANCH }}
+#       - name: Delete MERGE_BRANCH
+#         uses: dawidd6/action-delete-branch@v3
+#         with:
+#           github_token: ${{github.token}}
+#           branches: ${{env.MERGE_BRANCH}}
+#       - name: Checkout RELEASE_BRANCH
+#         uses: actions/checkout@v2
+#       - name: Create MERGE_BRANCH
+#         uses: peterjgrainger/action-create-branch@v2.0.1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           branch: ${{env.MERGE_BRANCH}}
+#       - name: Checkout MERGE_BRANCH
+#         uses: actions/checkout@v2
+#         with:
+#           ref: ${{env.MERGE_BRANCH}}
+#       - name: Rebase with ${{env.DEVELOP_BRANCH}}
+#         uses: peter-evans/rebase@v1
+#         with:
+#           base: ${{env.DEVELOP_BRANCH}}
+#       - name: Open Pull Request
+#         id: pull
+#         uses: tretuna/sync-branches@1.2.0
+#         with:
+#           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#           FROM_BRANCH: ${{env.MERGE_BRANCH}}
+#           TO_BRANCH: ${{env.DEVELOP_BRANCH}}
