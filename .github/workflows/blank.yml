@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ releases/** ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -16,37 +16,38 @@ jobs:
     name: Syncing branches
     env:
       MERGE_BRANCH_NAME: main-merge-back
+      MERGE_BRANCH: merge/$GITHUB_REF
     steps:
-      - name: Delete branch
-        uses: dawidd6/action-delete-branch@v3
-        with:
-          github_token: ${{github.token}}
-          branches: ${{env.MERGE_BRANCH_NAME}}
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Create branch
-        uses: peterjgrainger/action-create-branch@v2.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: ${{env.MERGE_BRANCH_NAME}}
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{env.MERGE_BRANCH_NAME}}
-      - name: Rebase with develop
-        uses: peter-evans/rebase@v1
-        with:
-          base: develop
-      - name: Check that develop changes exist
-        run: cat ./README.md
-      - name: Opening pull request
-        id: pull
-        uses: tretuna/sync-branches@1.2.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: ${{env.MERGE_BRANCH_NAME}}
-          TO_BRANCH: "develop"
+#       - name: Delete branch
+#         uses: dawidd6/action-delete-branch@v3
+#         with:
+#           github_token: ${{github.token}}
+#           branches: ${{env.MERGE_BRANCH_NAME}}
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Create branch
+#         uses: peterjgrainger/action-create-branch@v2.0.1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           branch: ${{env.MERGE_BRANCH_NAME}}
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#         with:
+#           ref: ${{env.MERGE_BRANCH_NAME}}
+#       - name: Rebase with develop
+#         uses: peter-evans/rebase@v1
+#         with:
+#           base: develop
+      - name: Check this name
+        run: echo ${{env.MERGE_BRANCH}}
+#       - name: Opening pull request
+#         id: pull
+#         uses: tretuna/sync-branches@1.2.0
+#         with:
+#           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#           FROM_BRANCH: ${{env.MERGE_BRANCH_NAME}}
+#           TO_BRANCH: "develop"
 
 # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 # jobs:
