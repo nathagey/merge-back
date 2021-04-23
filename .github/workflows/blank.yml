@@ -30,8 +30,6 @@ jobs:
           git pull origin ${{env.DEVELOP_BRANCH}} --rebase
       - name: Check env variables
         run: echo $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
-      - name: Check env variables2
-        run: echo ${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}}
       - name: Check that develop changes exist
         run: cat ./README.md
       - name: Opening pull request
