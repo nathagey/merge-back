@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Syncing branches
     env:
-      MERGE_BRANCH_NAME: merge-back
+      MERGE_BRANCH_NAME: main-merge-back
     steps:
       - name: Delete branch
         uses: dawidd6/action-delete-branch@v3
