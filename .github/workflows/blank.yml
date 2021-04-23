@@ -22,7 +22,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: ${{env.MERGE_BRANCH}} 
+          ref: ${{env.MERGE_BRANCH}}
+      - run: git branch
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
