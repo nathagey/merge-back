@@ -7,9 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -17,6 +14,8 @@ jobs:
   sync-branches:
     runs-on: ubuntu-latest
     name: Syncing branches
+    env:
+      MERGE_BRANCH_NAME: merge-back
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,11 +24,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: 'merge-main-back'
+          branch: ${{env.MERGE_BRANCH_NAME}}
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: merge-main-back
+          ref: ${{env.MERGE_BRANCH_NAME}}
       - name: Rebase with develop
         uses: peter-evans/rebase@v1
         with:
@@ -41,7 +40,7 @@ jobs:
         uses: tretuna/sync-branches@1.2.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: "merge-main-back"
+          FROM_BRANCH: ${{env.MERGE_BRANCH_NAME}}
           TO_BRANCH: "develop"
 
 # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
