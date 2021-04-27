@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Syncing branches
     steps:
-      - name: branch
-        run: |
-          content=`echo date`
-          echo "::set-output name=date::$content"
-      - run: |
-          echo "${{steps.branch.outputs.date}}"
+#       - name: branch
+#         run: |
+#           content=`echo date`
+#           echo "::set-output name=date::$content"
+#       - run: |
+#           echo "${{steps.branch.outputs.date}}"
 #       - name: Delete MERGE_BRANCH
 #         uses: dawidd6/action-delete-branch@v3
 #         with:
@@ -28,6 +28,8 @@ jobs:
 #           path: ./package.json
 #       - name: Echo package.json
 #         run: echo ${{ steps.package.outputs.content }}
+      - name: Checkout
+        uses: actions/checkout@v2
       - id: set_var
         run: |
           content=`cat ./src/package.json`
@@ -39,8 +41,6 @@ jobs:
           echo "::set-output name=packageJson::$content"
       - run: |
           echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
-#       - name: Checkout RELEASE_BRANCH
-#         uses: actions/checkout@v2
 #       - name: Create MERGE_BRANCH
 #         uses: peterjgrainger/action-create-branch@v2.0.1
 #         env:
