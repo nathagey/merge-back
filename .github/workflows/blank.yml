@@ -1,4 +1,4 @@
-name: Scheduled Release Sync
+name: Scheduled Sync
 
 on:
   schedule:
@@ -41,7 +41,7 @@ jobs:
         id: pull
         uses: tretuna/sync-branches@1.2.0
         with:
-          PULL_REQUEST_TITLE: Scheduled sync ${{env.RELEASE_BRANCH}} > ${{env.DEVELOP_BRANCH}}
+          PULL_REQUEST_TITLE: Merge ${{env.RELEASE_BRANCH}} to ${{env.DEVELOP_BRANCH}} (scheduled)
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: ${{env.MERGE_BRANCH}}
           TO_BRANCH: ${{env.DEVELOP_BRANCH}}
