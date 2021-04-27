@@ -1,4 +1,4 @@
-name: Scheduled Events
+name: Automated Sync PR
 
 on:
   push:
@@ -9,16 +9,18 @@ jobs:
   sync-branches:
     runs-on: ubuntu-latest
     name: Syncing branches
-    env:
-      MERGE_BRANCH: merge/r1
-      RELEASE_BRANCH: release/1.0.0
-      DEVELOP_BRANCH: develop
     steps:
-      - name: Delete MERGE_BRANCH
-        uses: dawidd6/action-delete-branch@v3
-        with:
-          github_token: ${{github.token}}
-          branches: ${{env.MERGE_BRANCH}}
+      - name: branch
+        run: |
+          content=`echo date`
+          echo "::set-output name=date::$content"
+      - run: |
+          echo "${{steps.branch.outputs.date}}"
+#       - name: Delete MERGE_BRANCH
+#         uses: dawidd6/action-delete-branch@v3
+#         with:
+#           github_token: ${{github.token}}
+#           branches: ${{env.MERGE_BRANCH}}
 #       - name: Read package.json
 #         id: package
 #         uses: juliangruber/read-file-action@v1
@@ -37,27 +39,27 @@ jobs:
 #           echo "::set-output name=packageJson::$content"
 #       - run: |
 #           echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
-      - name: Checkout RELEASE_BRANCH
-        uses: actions/checkout@v2
-      - name: Create MERGE_BRANCH
-        uses: peterjgrainger/action-create-branch@v2.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: ${{env.MERGE_BRANCH}}
-      - name: Checkout MERGE_BRANCH
-        uses: actions/checkout@v2
-        with:
-          ref: ${{env.MERGE_BRANCH}}
-      - name: Rebase with ${{env.DEVELOP_BRANCH}}
-        uses: peter-evans/rebase@v1
-        with:
-          base: ${{env.DEVELOP_BRANCH}}
-      - name: Open Pull Request
-        id: pull
-        uses: tretuna/sync-branches@1.2.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: ${{env.MERGE_BRANCH}}
-          TO_BRANCH: ${{env.DEVELOP_BRANCH}}
+#       - name: Checkout RELEASE_BRANCH
+#         uses: actions/checkout@v2
+#       - name: Create MERGE_BRANCH
+#         uses: peterjgrainger/action-create-branch@v2.0.1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           branch: ${{env.MERGE_BRANCH}}
+#       - name: Checkout MERGE_BRANCH
+#         uses: actions/checkout@v2
+#         with:
+#           ref: ${{env.MERGE_BRANCH}}
+#       - name: Rebase with ${{env.DEVELOP_BRANCH}}
+#         uses: peter-evans/rebase@v1
+#         with:
+#           base: ${{env.DEVELOP_BRANCH}}
+#       - name: Open Pull Request
+#         id: pull
+#         uses: tretuna/sync-branches@1.2.0
+#         with:
+#           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#           FROM_BRANCH: ${{env.MERGE_BRANCH}}
+#           TO_BRANCH: ${{env.DEVELOP_BRANCH}}
           
