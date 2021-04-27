@@ -1,7 +1,6 @@
 name: Scheduled Release Sync
 
 on:
-  push:
   schedule:
     - cron: '0 7 * * 1,3,5'
   workflow_dispatch:
