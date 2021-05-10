@@ -1,0 +1,45 @@
+name: Scheduled Events
+
+on:
+  schedule:
+    - cron: '0 7 * * 1,3,5'
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    name: Syncing branches
+    env:
+      RELEASE_BRANCH: main
+      MERGE_BRANCH: merge/scheduled
+      DEVELOP_BRANCH: develop
+    steps:
+      - name: Delete branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{github.token}}
+          branches: ${{env.MERGE_BRANCH}}
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{env.RELEASE_BRANCH}}
+      - name: Create branch
+        uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: ${{env.MERGE_BRANCH}}
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{env.MERGE_BRANCH}}
+      - name: Rebase with develop
+        uses: peter-evans/rebase@v1
+        with:
+          base: ${{env.DEVELOP_BRANCH}}
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.2.0
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          FROM_BRANCH: ${{env.MERGE_BRANCH}}
+          TO_BRANCH: ${{env.DEVELOP_BRANCH}}
