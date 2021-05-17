@@ -1,4 +1,4 @@
-name: Scheduled Events
+name: Scheduled Branch Sync
 
 on:
   schedule:
