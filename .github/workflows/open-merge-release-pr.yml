@@ -9,24 +9,33 @@ on:
         required: true
 
 jobs:
-  openSyncReleasePR:
+  openMergeReleasePR:
     runs-on: ubuntu-latest
 
+    env:
+      MERGE_BRANCH: merge-${{github.event.inputs.releaseBranch}}-to-${{env.DEVELOP_BRANCH}}
+      DEVELOP_BRANCH: develop
+
     steps:
-    - name: Checkout ${{ github.event.inputs.releaseBranch }}
+    - name: Checkout ${{github.event.inputs.releaseBranch}}
       uses: actions/checkout@v2.3.4
       with:
-        ref: ${{ github.event.inputs.releaseBranch }}
+        ref: ${{github.event.inputs.releaseBranch}}
 
     - name: Create Merge Branch
       uses: peterjgrainger/action-create-branch@v2.0.1
       with:
-        branch: merge-${{ github.event.inputs.releaseBranch }}-to-develop
+        branch: ${{env.MERGE_BRANCH}}
         
-    - name: Sync branches
+    - name: Rebase with develop
+      uses: peter-evans/rebase@v1
+      with:
+        base: ${{env.DEVELOP_BRANCH}}
+        
+    - name: Open PR
       uses: TreTuna/sync-branches@1.2.0
       with:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        FROM_BRANCH: merge-${{ github.event.inputs.releaseBranch }}-to-develop
-        TO_BRANCH: develop
-        PULL_REQUEST_TITLE: Merge ${{ github.event.inputs.releaseBranch }} to develop
+        FROM_BRANCH: ${{env.MERGE_BRANCH}}
+        TO_BRANCH: ${{env.DEVELOP_BRANCH}}
+        PULL_REQUEST_TITLE: Merge ${{github.event.inputs.releaseBranch}} to ${{env.DEVELOP_BRANCH}}
