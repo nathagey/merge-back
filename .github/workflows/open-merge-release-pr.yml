@@ -35,24 +35,15 @@ jobs:
         base: ${{env.DEVELOP_BRANCH}}
         
     - name: Open PR to develop
-      uses: technote-space/create-pr-action@v2
+      uses: gorillio/github-action-sync@master
       with:
-        PR_BRANCH_PREFIX: chore/
-        PR_BRANCH_NAME: 'merge-${{env.MERGE_BRANCH}}-to-${{env.DEVELOP_BRANCH}}'
-        PR_TITLE: "Chore: Merge ${{github.event.inputs.releaseBranch}} to ${{env.DEVELOP_BRANCH}}"
-        PR_BODY: $GITHUB_ACTION_PATH
+        upstream: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
+        upstream_branch: ${{env.MERGE_BRANCH}}
+        branch: ${{env.DEVELOP_BRANCH}}
+      env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        
-#     - name: Open PR to develop
-#       uses: gorillio/github-action-sync@master
-#       with:
-#         upstream: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
-#         upstream_branch: ${{env.MERGE_BRANCH}}
-#         branch: ${{env.DEVELOP_BRANCH}}
-#       env:
-#         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-#         GITBOT_EMAIL: action@github.com
-#         DRY_RUN: false
+        GITBOT_EMAIL: action@github.com
+        DRY_RUN: false
         
 #     - name: Open PR
 #       uses: TreTuna/sync-branches@1.2.0
