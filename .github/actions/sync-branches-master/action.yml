@@ -13,6 +13,12 @@ inputs:
   TO_BRANCH:
     description: "Branch to make the pull-request against"
     required: true
+  GITHUB_USER_EMAIL:
+    description: "User email associated with the pull request. Default: user email associated with the event triggering this action."
+    required: true
+  GITHUB_USER_NAME:
+    description: "User name associated with the pull request. Default: the user name associated with the event triggering this action."
+    required: true
   PULL_REQUEST_TITLE:
     description: "What you would like as the title of the pull request. Default: 'sync: {FROM_BRANCH} to {TO_BRANCH}'"
     required: false
