@@ -1,0 +1,35 @@
+{
+  "name": "sync-branches",
+  "version": "1.2.0",
+  "description": "GitHub Action to sync a branch when another one is updated",
+  "main": "index.js",
+  "author": "Tre Ammatuna <tre@tretuna.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tretuna/sync-branches/issues"
+  },
+  "homepage": "https://github.com/tretuna/sync-branches#readme",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:TreTuna/sync-branches.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "JavaScript"
+  ],
+  "scripts": {
+    "lint": "eslint index.js",
+    "package": "ncc build index.js -o dist",
+    "test": "eslint index.js && jest"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^2.1.0"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.1",
+    "eslint": "^6.3.0",
+    "jest": "^25.5.4"
+  }
+}
