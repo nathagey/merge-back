@@ -1,0 +1,32 @@
+name: Open Merge Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseBranch:
+        description: 'What release branch do you want to use to open the PR (eg: release/1.0.0) '
+        default: 'release/'
+        required: true
+
+jobs:
+  openSyncReleasePR:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout ${{ github.event.inputs.releaseBranch }}
+      uses: actions/checkout@v2.3.4
+      with:
+        ref: ${{ github.event.inputs.releaseBranch }}
+
+    - name: Create Merge Branch
+      uses: peterjgrainger/action-create-branch@v2.0.1
+      with:
+        branch: merge-${{ github.event.inputs.releaseBranch }}-to-develop
+        
+    - name: Sync branches
+      uses: TreTuna/sync-branches@1.2.0
+      with:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        FROM_BRANCH: merge-${{ github.event.inputs.releaseBranch }}-to-develop
+        TO_BRANCH: develop
+        PULL_REQUEST_TITLE: Merge ${{ github.event.inputs.releaseBranch }} to develop
