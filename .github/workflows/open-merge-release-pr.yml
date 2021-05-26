@@ -33,25 +33,25 @@ jobs:
       uses: peter-evans/rebase@v1
       with:
         base: ${{env.DEVELOP_BRANCH}}
-        
-    - name: Open PR
-#       uses: TreTuna/sync-branches@1.2.0
-      uses: ./.github/actions/sync-branches-master
-      with:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        GITHUB_USER_EMAIL: action@github.com
-        GITHUB_USER_NAME: GitHub Action
-        FROM_BRANCH: ${{env.MERGE_BRANCH}}
-        TO_BRANCH: ${{env.DEVELOP_BRANCH}}
-        PULL_REQUEST_TITLE: Merge ${{github.event.inputs.releaseBranch}} to ${{env.DEVELOP_BRANCH}}
 
-#     - name: Open PR to develop
-#       uses: gorillio/github-action-sync@master
+    - name: Open PR to develop
+      uses: gorillio/github-action-sync@master
+      with:
+        upstream: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
+        upstream_branch: ${{env.MERGE_BRANCH}}
+        branch: ${{env.DEVELOP_BRANCH}}
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITBOT_EMAIL: action@github.com
+        DRY_RUN: false
+
+#     - name: Open PR
+#       uses: TreTuna/sync-branches@1.2.0
+# #       uses: ./.github/actions/sync-branches-master
 #       with:
-#         upstream: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
-#         upstream_branch: ${{env.MERGE_BRANCH}}
-#         branch: ${{env.DEVELOP_BRANCH}}
-#       env:
 #         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-#         GITBOT_EMAIL: action@github.com
-#         DRY_RUN: false
+#         GITHUB_USER_EMAIL: action@github.com
+#         GITHUB_USER_NAME: GitHub Action
+#         FROM_BRANCH: ${{env.MERGE_BRANCH}}
+#         TO_BRANCH: ${{env.DEVELOP_BRANCH}}
+#         PULL_REQUEST_TITLE: Merge ${{github.event.inputs.releaseBranch}} to ${{env.DEVELOP_BRANCH}}
