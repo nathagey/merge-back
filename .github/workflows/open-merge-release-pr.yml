@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Open Merge Release PR
     env:
-      MERGE_BRANCH: merge-${{github.event.inputs.releaseBranch}}-to-${{env.DEVELOP_BRANCH}}
+      MERGE_BRANCH: merge-${{github.event.inputs.releaseBranch}}-to-develop
       DEVELOP_BRANCH: develop
 
     steps:
