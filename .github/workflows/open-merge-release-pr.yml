@@ -37,7 +37,7 @@ jobs:
     - name: Open PR to develop
       uses: gorillio/github-action-sync@master
       with:
-        upstream: https://github.com/${{env.GITHUB_REPOSITORY}}
+        upstream: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
         upstream_branch: ${{env.MERGE_BRANCH}}
         branch: ${{env.DEVELOP_BRANCH}}
       env:
