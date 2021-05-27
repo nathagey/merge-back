@@ -35,7 +35,8 @@ jobs:
         base: ${{env.DEVELOP_BRANCH}}
 
     - name: Open PR to develop
-      uses: gorillio/github-action-sync@master
+      # uses: gorillio/github-action-sync@master
+      uses: ./.github/actions/github-action-sync-0.2.0
       with:
         upstream: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
         upstream_branch: ${{env.MERGE_BRANCH}}
