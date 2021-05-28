@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       releaseBranch:
-        description: 'What release branch do you want to use to open the PR (eg: release/1.0.0) '
+        description: 'What branch has commits that need to be in develop? (eg: release/1.0.0)'
         default: 'release/'
         required: true
 
